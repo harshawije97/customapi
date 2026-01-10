@@ -4,12 +4,15 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import type { CreateUser, UpdateUser } from 'src/core/types';
+import { CreateUserDTO } from 'src/core/DTO/create-user.dto';
+import { UpdateUserDTO } from 'src/core/DTO/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -38,14 +41,8 @@ export class UsersController {
   //   End of Specific Routes =====
 
   @Get(':id')
-  getUser(@Param('id') id: string) {
+  getUser(@Param('id', ParseUUIDPipe) id: string) {
     const response = this.userService.getSingleUser(id);
-    if (typeof response === 'string') {
-      return {
-        message: response,
-        status: 404,
-      };
-    }
 
     return {
       message: 'Request successful',
@@ -55,19 +52,22 @@ export class UsersController {
   }
 
   @Post('create')
-  createUser(@Body() user: CreateUser) {
-    const response = this.userService.createUser(user);
+  createUser(@Body(ValidationPipe) createUserDto: CreateUserDTO) {
+    const response = this.userService.createUser(createUserDto);
     return response;
   }
 
   @Patch(':id')
-  updateUser(@Param('id') id: string, @Body() user: UpdateUser) {
-    const response = this.userService.updateExistingUser(id, user);
+  updateUser(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDTO,
+  ) {
+    const response = this.userService.updateExistingUser(id, updateUserDto);
     return response;
   }
 
   @Delete(':id')
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     const response = this.userService.deleteUser(id);
     return {
       message: response,

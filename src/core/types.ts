@@ -3,7 +3,7 @@ export type User = {
   fullName: string;
   email: string;
   role: 'INTERN' | 'ENGINEER' | 'TRAINEE';
-  dateOfBirth?: string;
+  dateOfBirth?: Date;
   age: number;
 };
 
