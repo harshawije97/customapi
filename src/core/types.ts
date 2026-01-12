@@ -3,8 +3,10 @@ export type User = {
   fullName: string;
   email: string;
   role: 'INTERN' | 'ENGINEER' | 'TRAINEE';
-  dateOfBirth?: Date;
+  dateOfBirth?: Date | string | null;
   age: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
 
 export type CreateUser = {

@@ -26,7 +26,7 @@ export class CreateUserDTO {
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  dateOfBirth?: Date;
+  dateOfBirth?: Date | null;
 
   @IsNumber()
   @IsNotEmpty()

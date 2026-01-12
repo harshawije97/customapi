@@ -11,8 +11,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDTO } from 'src/core/DTO/create-user.dto';
 import { UpdateUserDTO } from 'src/core/DTO/update-user.dto';
+import { Prisma } from 'src/generated/prisma/client';
 
 @Controller('users')
 export class UsersController {
@@ -21,11 +21,7 @@ export class UsersController {
   @Get()
   getAllUsers(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'TRAINEE') {
     const response = this.userService.getAllUsers(role);
-    return {
-      message: 'Fetched Successfully',
-      status: 200,
-      data: response.flat(),
-    };
+    return response;
   }
 
   //   Specific Routes =====
@@ -52,7 +48,7 @@ export class UsersController {
   }
 
   @Post('create')
-  createUser(@Body(ValidationPipe) createUserDto: CreateUserDTO) {
+  createUser(@Body(ValidationPipe) createUserDto: Prisma.UserCreateInput) {
     const response = this.userService.createUser(createUserDto);
     return response;
   }
